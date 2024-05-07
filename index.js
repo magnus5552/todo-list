@@ -25,8 +25,7 @@
 }
 
 class Component {
-  constructor() {
-  }
+  constructor() {}
 
   getDomNode() {
     this._domNode = this.render();
@@ -35,6 +34,11 @@ class Component {
 }
 
 class TodoList extends Component {
+  constructor(state) {
+    super();
+    this.state = state;
+  }
+
   render() {
     return createElement("div", { class: "todo-list" }, [
       createElement("h1", {}, "TODO List"),
@@ -46,27 +50,25 @@ class TodoList extends Component {
         }),
         createElement("button", { id: "add-btn" }, "+"),
       ]),
-      createElement("ul", { id: "todos" }, [
-        createElement("li", {}, [
-          createElement("input", { type: "checkbox" }),
-          createElement("label", {}, "Сделать домашку"),
-          createElement("button", {}, "🗑️")
-        ]),
-        createElement("li", {}, [
-          createElement("input", { type: "checkbox" }),
-          createElement("label", {}, "Сделать практику"),
-          createElement("button", {}, "🗑️")
-        ]),
-        createElement("li", {}, [
-          createElement("input", { type: "checkbox" }),
-          createElement("label", {}, "Пойти домой"),
-          createElement("button", {}, "🗑️")
-        ]),
-      ]),
+      createElement(
+        "ul",
+        { id: "todos" },
+        this.state.todos.map((x) =>
+          createElement("li", {}, [
+            createElement("input", { type: "checkbox" }),
+            createElement("label", {}, x),
+            createElement("button", {}, "🗑️"),
+          ])
+        )
+      ),
     ]);
   }
 }
 
+const state = {
+  todos: ["Сделать домашку", "Сделать практику", "Пойти домой"],
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-  document.body.appendChild(new TodoList().getDomNode());
+  document.body.appendChild(new TodoList(state).getDomNode());
 });
