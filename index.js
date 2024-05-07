@@ -69,32 +69,15 @@ class TodoList extends Component {
         "ul",
         { id: "todos" },
         this.state.todos.map((todo) =>
-          createElement("li", { class: todo.done ? "completed" : "" }, [
-            createElement(
-              "input",
-              { type: "checkbox", ...(todo.done && { checked: true })},
-              null,
-              [{
-                type: "click",
-                listener: () => {
-                  todo.done = !todo.done;
-                  this.update();
-                },
-              }]
-            ),
-            createElement("label", {}, todo.text),
-            createElement("button", {}, "🗑️", [
-              { type: "click", listener: this.onTaskDeleteFactory(todo)},
-            ]),
-          ])
+          new Task(todo, this.onTaskDeleteFactory(todo)).getDomNode()
         )
       ),
     ]);
   }
-  
+
   onAddTask() {
     this.state.todos.push({ text: this.state.text, done: false });
-    this.state.text = ''; 
+    this.state.text = "";
     this.update();
   }
 
@@ -111,10 +94,41 @@ class TodoList extends Component {
   }
 }
 
-var doneTasks =[]
+class Task extends Component {
+  constructor(todo, onDeleteTask) {
+    super();
+    this.todo = todo;
+    this.onDeleteTask = onDeleteTask;
+  }
+
+  render() {
+    return createElement("li", { class: this.todo.done ? "completed" : "" }, [
+      createElement(
+        "input",
+        { type: "checkbox", ...(this.todo.done && { checked: true }) },
+        null,
+        [
+          {
+            type: "click",
+            listener: () => {
+              this.todo.done = !this.todo.done;
+              this.update();
+            },
+          },
+        ]
+      ),
+      createElement("label", {}, this.todo.text),
+      createElement("button", {}, "🗑️", [
+        { type: "click", listener: this.onDeleteTask },
+      ]),
+    ]);
+  }
+}
+
+var doneTasks = [];
 
 const state = {
-  text: '',
+  text: "",
   todos: [
     { text: "Сделать домашку", done: false },
     { text: "Сделать практику", done: false },
