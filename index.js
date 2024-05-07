@@ -50,21 +50,7 @@ class TodoList extends Component {
   render() {
     return createElement("div", { class: "todo-list" }, [
       createElement("h1", {}, "TODO List"),
-      createElement("div", { class: "add-todo" }, [
-        createElement(
-          "input",
-          {
-            id: "new-todo",
-            type: "text",
-            placeholder: "Задание",
-          },
-          null,
-          [{ type: "input", listener: this.onAddInputChange.bind(this) }]
-        ),
-        createElement("button", { id: "add-btn" }, "+", [
-          { type: "click", listener: this.onAddTask.bind(this) },
-        ]),
-      ]),
+      new AddTodo(this.onAddTask.bind(this)).getDomNode(),
       createElement(
         "ul",
         { id: "todos" },
@@ -75,14 +61,9 @@ class TodoList extends Component {
     ]);
   }
 
-  onAddTask() {
-    this.state.todos.push({ text: this.state.text, done: false });
-    this.state.text = "";
+  onAddTask(text) {
+    this.state.todos.push({ text, done: false });
     this.update();
-  }
-
-  onAddInputChange(event) {
-    this.state.text = event.target.value;
   }
 
   onTaskDeleteFactory(task) {
@@ -122,6 +103,36 @@ class Task extends Component {
         { type: "click", listener: this.onDeleteTask },
       ]),
     ]);
+  }
+}
+
+class AddTodo extends Component {
+  constructor(onAddTask) {
+    super();
+    this.onAddTask = onAddTask;
+    this.text = "";
+  }
+
+  render() {
+    return createElement("div", { class: "add-todo" }, [
+      createElement(
+        "input",
+        {
+          id: "new-todo",
+          type: "text",
+          placeholder: "Задание",
+        },
+        null,
+        [{ type: "input", listener: this.onAddInputChange.bind(this) }]
+      ),
+      createElement("button", { id: "add-btn" }, "+", [
+        { type: "click", listener: () => this.onAddTask(this.text) },
+      ]),
+    ]);
+  }
+
+  onAddInputChange(event) {
+    this.text = event.target.value;
   }
 }
 
