@@ -37,7 +37,7 @@ class Component {
   }
 
   update() {
-    this._domNode.replaceWith(this.getDomNode())
+    this._domNode.replaceWith(this.getDomNode());
   }
 }
 
@@ -72,11 +72,9 @@ class TodoList extends Component {
           createElement("li", {}, [
             createElement("input", { type: "checkbox" }),
             createElement("label", {}, x),
-            createElement("button", {}, "🗑️", [{ type: 'click', listener: () => {
-              const taskIndex = this.state.todos.indexOf(x);
-              this.state.todos.splice(taskIndex, 1);
-              this.update();
-            }}]),
+            createElement("button", {}, "🗑️", [
+              { type: "click", listener: this.onTaskDeleteFactory(x)},
+            ]),
           ])
         )
       ),
@@ -85,12 +83,20 @@ class TodoList extends Component {
 
   onAddTask() {
     this.state.todos.push(this.state.text);
-    this.state.text = '';
+    this.state.text = "";
     this.update();
   }
 
   onAddInputChange(event) {
     this.state.text = event.target.value;
+  }
+
+  onTaskDeleteFactory(task) {
+    return () => {
+      const taskIndex = this.state.todos.indexOf(task);
+      this.state.todos.splice(taskIndex, 1);
+      this.update();
+    };
   }
 }
 
