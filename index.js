@@ -58,6 +58,7 @@ class TodoList extends Component {
             type: "text",
             placeholder: "Задание",
           },
+          null,
           [{ type: "input", listener: this.onAddInputChange.bind(this) }]
         ),
         createElement("button", { id: "add-btn" }, "+", [
@@ -71,7 +72,11 @@ class TodoList extends Component {
           createElement("li", {}, [
             createElement("input", { type: "checkbox" }),
             createElement("label", {}, x),
-            createElement("button", {}, "🗑️"),
+            createElement("button", {}, "🗑️", [{ type: 'click', listener: () => {
+              const taskIndex = this.state.todos.indexOf(x);
+              this.state.todos.splice(taskIndex, 1);
+              this.update();
+            }}]),
           ])
         )
       ),
@@ -80,6 +85,8 @@ class TodoList extends Component {
 
   onAddTask() {
     this.state.todos.push(this.state.text);
+    this.state.text = '';
+    this.update();
   }
 
   onAddInputChange(event) {
