@@ -69,21 +69,22 @@ class TodoList extends Component {
         "ul",
         { id: "todos" },
         this.state.todos.map((todo) =>
-          createElement("li", { className: todo.done ? "completed" : "" }, [
+          createElement("li", { class: todo.done ? "completed" : "" }, [
             createElement(
               "input",
-              { type: "checkbox", checked: todo.done },
-              {
+              { type: "checkbox", ...(todo.done && { checked: true })},
+              null,
+              [{
                 type: "click",
                 listener: () => {
-                  todo.done = true;
-                  
+                  todo.done = !todo.done;
+                  this.update();
                 },
-              }
+              }]
             ),
             createElement("label", {}, todo.text),
             createElement("button", {}, "🗑️", [
-              { type: "click", listener: this.onTaskDeleteFactory(x)},
+              { type: "click", listener: this.onTaskDeleteFactory(todo)},
             ]),
           ])
         )
@@ -91,15 +92,9 @@ class TodoList extends Component {
     ]);
   }
   
-  onAddTask(done) {
-    this.state.todos.push({ text: this.state.text, done: done });
+  onAddTask() {
+    this.state.todos.push({ text: this.state.text, done: false });
     this.state.text = ''; 
-    this.update();
-  }
-  
-  onTaskChecked(event){
-    ind
-    this.state.done = true;
     this.update();
   }
 

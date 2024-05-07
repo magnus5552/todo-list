@@ -60,6 +60,6 @@ button {
     flex-grow: 1;
 }
 
-.completed label {
+.todo-list .completed label {
     color: gray;
 }
