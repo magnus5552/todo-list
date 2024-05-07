@@ -38,6 +38,7 @@ class Component {
 
   update() {
     this._domNode.replaceWith(this.getDomNode());
+    saveState();
   }
 }
 
@@ -99,17 +100,21 @@ class Task extends Component {
         ]
       ),
       createElement("label", {}, this.todo.text),
-      createElement("button", {class: this.count === 1 ? 'needTodel' : ''}, "🗑️", [
-        {
-          type: "click",
-          listener: () => {
-            this.count++;
-            if (this.count === 2)
-              this.onDeleteTask();
-            this.update();
+      createElement(
+        "button",
+        { class: this.count === 1 ? "needTodel" : "" },
+        "🗑️",
+        [
+          {
+            type: "click",
+            listener: () => {
+              this.count++;
+              if (this.count === 2) this.onDeleteTask();
+              this.update();
+            },
           },
-        },
-      ]),
+        ]
+      ),
     ]);
   }
 }
@@ -146,14 +151,25 @@ class AddTodo extends Component {
 
 var doneTasks = [];
 
-const state = {
-  text: "",
-  todos: [
-    { text: "Сделать домашку", done: false },
-    { text: "Сделать практику", done: false },
-    { text: "Пойти домой", done: false },
-  ],
-};
+let state = localStorage.getItem("state");
+
+if (!state) {
+  state = {
+    text: "",
+    todos: [
+      { text: "Сделать домашку", done: false },
+      { text: "Сделать практику", done: false },
+      { text: "Пойти домой", done: false },
+    ],
+  };
+}
+else {
+  state = JSON.parse(state);
+}
+
+function saveState() {
+  localStorage.setItem("state", JSON.stringify(state));
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(new TodoList(state).getDomNode());
