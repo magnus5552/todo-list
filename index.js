@@ -68,10 +68,20 @@ class TodoList extends Component {
       createElement(
         "ul",
         { id: "todos" },
-        this.state.todos.map((x) =>
-          createElement("li", {}, [
-            createElement("input", { type: "checkbox" }),
-            createElement("label", {}, x),
+        this.state.todos.map((todo) =>
+          createElement("li", { className: todo.done ? "completed" : "" }, [
+            createElement(
+              "input",
+              { type: "checkbox", checked: todo.done },
+              {
+                type: "click",
+                listener: () => {
+                  todo.done = true;
+                  
+                },
+              }
+            ),
+            createElement("label", {}, todo.text),
             createElement("button", {}, "🗑️", [
               { type: "click", listener: this.onTaskDeleteFactory(x)},
             ]),
@@ -80,10 +90,16 @@ class TodoList extends Component {
       ),
     ]);
   }
-
-  onAddTask() {
-    this.state.todos.push(this.state.text);
-    this.state.text = "";
+  
+  onAddTask(done) {
+    this.state.todos.push({ text: this.state.text, done: done });
+    this.state.text = ''; 
+    this.update();
+  }
+  
+  onTaskChecked(event){
+    ind
+    this.state.done = true;
     this.update();
   }
 
@@ -100,9 +116,15 @@ class TodoList extends Component {
   }
 }
 
+var doneTasks =[]
+
 const state = {
-  text: "",
-  todos: ["Сделать домашку", "Сделать практику", "Пойти домой"],
+  text: '',
+  todos: [
+    { text: "Сделать домашку", done: false },
+    { text: "Сделать практику", done: false },
+    { text: "Пойти домой", done: false },
+  ],
 };
 
 document.addEventListener("DOMContentLoaded", () => {
