@@ -1,4 +1,4 @@
-﻿function createElement(tag, attributes, children) {
+﻿function createElement(tag, attributes, children, callbacks = []) {
   const element = document.createElement(tag);
 
   if (attributes) {
@@ -20,6 +20,10 @@
   } else if (children instanceof HTMLElement) {
     element.appendChild(children);
   }
+
+  callbacks.forEach((callback) => {
+    element.addEventListener(callback.type, callback.listener);
+  })
 
   return element;
 }
