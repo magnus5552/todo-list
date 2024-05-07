@@ -35,6 +35,10 @@ class Component {
     this._domNode = this.render();
     return this._domNode;
   }
+
+  update() {
+    this._domNode.replaceWith(this.getDomNode())
+  }
 }
 
 class TodoList extends Component {
