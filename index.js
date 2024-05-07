@@ -62,7 +62,7 @@ class TodoList extends Component {
   }
 
   onAddTask(text) {
-    this.state.todos.push({ text, done: false, count: 0 });
+    this.state.todos.push({ text, done: false });
     this.update();
   }
 
@@ -79,6 +79,7 @@ class Task extends Component {
   constructor(todo, onDeleteTask) {
     super();
     this.todo = todo;
+    this.count = 0;
     this.onDeleteTask = onDeleteTask;
   }
   render() {
@@ -98,12 +99,12 @@ class Task extends Component {
         ]
       ),
       createElement("label", {}, this.todo.text),
-      createElement("button", {class: this.todo.count === 1 ? 'needTodel' : ''}, "🗑️", [
+      createElement("button", {class: this.count === 1 ? 'needTodel' : ''}, "🗑️", [
         {
           type: "click",
           listener: () => {
-            this.todo.count++;
-            if (this.todo.count === 2)
+            this.count++;
+            if (this.count === 2)
               this.onDeleteTask();
             this.update();
           },
@@ -148,9 +149,9 @@ var doneTasks = [];
 const state = {
   text: "",
   todos: [
-    { text: "Сделать домашку", done: false, count: 0 },
-    { text: "Сделать практику", done: false, count: 0 },
-    { text: "Пойти домой", done: false, count: 0 },
+    { text: "Сделать домашку", done: false },
+    { text: "Сделать практику", done: false },
+    { text: "Пойти домой", done: false },
   ],
 };
 
