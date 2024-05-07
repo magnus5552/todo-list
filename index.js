@@ -28,6 +28,8 @@
   return element;
 }
 
+
+
 class Component {
   constructor() {}
 
@@ -67,9 +69,18 @@ class TodoList extends Component {
       ),
     ]);
   }
+  
+  onAddTask() {
+    this.state.todos.push(this.state.text);
+  }
+  
+  onAddInputChange(event) {
+    this.state.text = event.target.value;
+  }
 }
 
 const state = {
+  text: '',
   todos: ["Сделать домашку", "Сделать практику", "Пойти домой"],
 };
 
