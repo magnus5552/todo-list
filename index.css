@@ -63,3 +63,7 @@ button {
 .todo-list .completed label {
     color: gray;
 }
+
+.needTodel {
+    background-color: red;
+}
